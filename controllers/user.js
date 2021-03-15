@@ -2,6 +2,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// PASSWORD VALIDATOR
+// MASK DATA
+// EMAIL DISPLAY 
+
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
