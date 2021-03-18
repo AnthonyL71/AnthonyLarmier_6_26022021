@@ -1,7 +1,7 @@
 const Sauces = require('../models/sauces');
 const fs = require('fs');
 
-
+// Création d'une sauce
 exports.createSauces = (req, res, next) =>{
 	const saucesObjet = JSON.parse(req.body.sauce);
 	const sauces = new Sauces(
@@ -17,7 +17,7 @@ exports.createSauces = (req, res, next) =>{
 	.catch(error => res.status(500).json({error}));
 };
 
-
+// Recherche d'une sauce
 exports.getOneSauces = (req, res, next) => {
   Sauces.findOne({
     _id: req.params.id
@@ -34,18 +34,24 @@ exports.getOneSauces = (req, res, next) => {
   );
 };
 
+// Modification d'une sauce
 exports.modifySauces = (req, res, next) => {
-  const sauces = new Sauces({
-    _id: req.params.id,
-    name: req.body.name,
-    description: req.body.description,
-    imageUrl: req.body.imageUrl,
-    manufacturer: req.body.manufacturer,
-    userId: req.body.userId,
-    mainPepper: req.body.mainPepper,
-    imageUrl: req.protocol + '://' + req.get('host') + '/images/' + req.file.filename
+	let sauces;
+	try
+	{
+		JSON.parse(req.body.sauce);
+		sauces = {
+			...JSON.parse(req.body.sauce),
+			imageUrl: req.protocol + '://' + req.get('host') + '/images/' + req.file.filename
 
-  });
+		};
+	}
+	catch
+	{
+		sauces = {
+			...req.body
+		};
+	}
   Sauces.updateOne({_id: req.params.id}, sauces).then(
     () => {
       res.status(201).json({
@@ -61,6 +67,7 @@ exports.modifySauces = (req, res, next) => {
   );
 };
 
+// Like ou Dislike une sauce
 exports.likeSauces = (req, res, next) => {
   const like = new Sauces({
     likes: req.body.like,
@@ -73,10 +80,29 @@ exports.likeSauces = (req, res, next) => {
       Sauces.updateOne({_id: req.params.id}, sauces)
       
       if (like.likes == 1) {
-        sauces.likes = 1;
+        let Disliked = sauces.usersDisliked.indexOf(like.userId);
+        if (Disliked > -1) {
+          sauces.usersDisliked.splice(Liked, 1);
+          sauces.dislikes = sauces.dislikes -1;
+        }
+        sauces.likes = sauces.likes +1;
+        sauces.usersLiked.push(like.userId);
       } else if (like.likes == 0) {
-        sauces.likes = 0;
-      }
+        let Liked = sauces.usersLiked.indexOf(like.userId);
+        if (Liked > -1) {
+          sauces.usersLiked.splice(Liked, 1);
+          sauces.likes = sauces.likes -1;
+        }
+        let Disliked = sauces.usersDisliked.indexOf(like.userId);
+        if (Disliked > -1) {
+          sauces.usersDisliked.splice(Liked, 1);
+          sauces.dislikes = sauces.dislikes -1;
+        }
+      } else if (like.likes == -1) {
+        sauces.dislikes = sauces.dislikes +1;
+        sauces.usersDisliked.push(like.userId);
+    }
+      console.log(sauces);
 			sauces.save(sauces)
       res.status(200).json(sauces);
     }
@@ -89,6 +115,7 @@ exports.likeSauces = (req, res, next) => {
   );
 };
 
+// Supprime une sauce
 exports.deleteSauces = (req, res, next) => {
   Sauces.deleteOne({_id: req.params.id}).then(
     () => {
@@ -105,6 +132,7 @@ exports.deleteSauces = (req, res, next) => {
   );
 };
 
+// Cherche toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauces.find().then(
     (sauces) => {
