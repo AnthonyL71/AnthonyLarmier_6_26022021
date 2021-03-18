@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
 const userCtrl = require('../controllers/user');
-// Si on s'inscrit
+
+// Routes
+// Signup route
 router.post('/signup', userCtrl.signup);
-// Si on se connecte
+// Login route
 router.post('/login', userCtrl.login);
 
 module.exports = router;

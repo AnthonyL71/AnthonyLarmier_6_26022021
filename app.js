@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 const path = require('path');
-
 const app = express();
+
+// Setup MongoDb user, password, server, database exemple
+ const server = 'mongodb+srv://<user>:<password>@<server>/<database>?retryWrites=true&w=majority';
+//
 
 
 app.use((req, res, next) => {
@@ -16,14 +19,13 @@ app.use((req, res, next) => {
   });
 
   app.use(bodyParser.json());
-
+  // Routes sauces
   app.use('/api/sauces', saucesRoutes);
-
+  // Routes user
   app.use('/api/auth', userRoutes);
   
   app.use('/images', express.static(path.join(__dirname, 'images')));
-
-  mongoose.connect('mongodb+srv://test:QkJ2PoOKCQYRIHO9@clusteroc.pao2p.mongodb.net/AnthonyLarmier?retryWrites=true&w=majority',
+  mongoose.connect(server,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

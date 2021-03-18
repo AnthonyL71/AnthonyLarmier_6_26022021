@@ -1,18 +1,16 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const MaskData = require('maskdata');
 
-// PASSWORD VALIDATOR
-// MASK DATA
-// EMAIL DISPLAY 
-
-
-// Inscription
+// Signup
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+  const maskedEmail = MaskData.maskEmail2(req.body.email, emailMask2Options);
+  bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const user = new User({
           email: req.body.email,
+          emailmasked: maskedEmail,
           password: hash
         });
         user.save()
@@ -22,7 +20,15 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
-  // Connection
+  // Mail MaskData
+  const emailMask2Options = {
+    maskWith: "*", 
+    unmaskedStartCharactersBeforeAt: 3,
+    unmaskedEndCharactersAfterAt: 2,
+    maskAtTheRate: false
+};
+
+  // Login
   exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {

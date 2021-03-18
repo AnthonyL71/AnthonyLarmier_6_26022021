@@ -4,18 +4,19 @@ const saucesCtrl = require('../controllers/sauces');
 const multer = require('../middleware/multer-config');
 const auth = require('../middleware/auth');
 
-// Si on veut toute les sauces
+// Routes 
+// Search all sauces
 router.get('/',auth,  saucesCtrl.getAllSauces);
 
-// Si on selectionne une sauce
+// Select one sauce
 router.get('/:id', auth, saucesCtrl.getOneSauces);
-//Si on crée une sauce
+// Create one sauce
 router.post('/', auth, multer, saucesCtrl.createSauces);
-// Si on aime ou aime pas une sauce
+// Like or Dislike one sauce
 router.post('/:id/like', auth, saucesCtrl.likeSauces);
-// Si on modifie une sauce
+// Modify one sauce
 router.put('/:id', auth, multer, saucesCtrl.modifySauces);
-// Si on supprime une sauce
+// Deleted one sauce
 router.delete('/:id', auth, saucesCtrl.deleteSauces);
 
 module.exports = router;

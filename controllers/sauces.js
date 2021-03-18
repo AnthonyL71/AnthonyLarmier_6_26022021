@@ -1,7 +1,7 @@
-const Sauces = require('../models/sauces');
+const Sauces = require('../models/Sauce');
 const fs = require('fs');
 
-// Création d'une sauce
+// Create one sauce
 exports.createSauces = (req, res, next) =>{
 	const saucesObjet = JSON.parse(req.body.sauce);
 	const sauces = new Sauces(
@@ -17,7 +17,7 @@ exports.createSauces = (req, res, next) =>{
 	.catch(error => res.status(500).json({error}));
 };
 
-// Recherche d'une sauce
+// Search one sauce
 exports.getOneSauces = (req, res, next) => {
   Sauces.findOne({
     _id: req.params.id
@@ -34,7 +34,7 @@ exports.getOneSauces = (req, res, next) => {
   );
 };
 
-// Modification d'une sauce
+// Modify one sauce
 exports.modifySauces = (req, res, next) => {
 	let sauces;
 	try
@@ -67,7 +67,7 @@ exports.modifySauces = (req, res, next) => {
   );
 };
 
-// Like ou Dislike une sauce
+// Like or Dislike one sauce
 exports.likeSauces = (req, res, next) => {
   const like = new Sauces({
     likes: req.body.like,
@@ -115,7 +115,7 @@ exports.likeSauces = (req, res, next) => {
   );
 };
 
-// Supprime une sauce
+// Deleted one sauce
 exports.deleteSauces = (req, res, next) => {
   Sauces.deleteOne({_id: req.params.id}).then(
     () => {
@@ -132,7 +132,7 @@ exports.deleteSauces = (req, res, next) => {
   );
 };
 
-// Cherche toutes les sauces
+// Search all sauces
 exports.getAllSauces = (req, res, next) => {
   Sauces.find().then(
     (sauces) => {
