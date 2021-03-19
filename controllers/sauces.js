@@ -102,7 +102,6 @@ exports.likeSauces = (req, res, next) => {
         sauces.dislikes = sauces.dislikes +1;
         sauces.usersDisliked.push(like.userId);
     }
-      console.log(sauces);
 			sauces.save(sauces)
       res.status(200).json(sauces);
     }
@@ -117,19 +116,16 @@ exports.likeSauces = (req, res, next) => {
 
 // Deleted one sauce
 exports.deleteSauces = (req, res, next) => {
-  Sauces.deleteOne({_id: req.params.id}).then(
-    () => {
-      res.status(200).json({
-        message: 'Deleted!'
-      });
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
+  Sauces.findOne({ _id: req.params.id })
+  .then(thing => {
+    const filename = thing.imageUrl.split('/images/')[1];
+    fs.unlink(`images/${filename}`, () => {
+      Sauces.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+      .catch(error => res.status(400).json({ error }));
+  });
+})
+.catch(error => res.status(500).json({ error }));
 };
 
 // Search all sauces

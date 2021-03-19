@@ -7,7 +7,6 @@ const auth = require('../middleware/auth');
 // Routes 
 // Search all sauces
 router.get('/',auth,  saucesCtrl.getAllSauces);
-
 // Select one sauce
 router.get('/:id', auth, saucesCtrl.getOneSauces);
 // Create one sauce

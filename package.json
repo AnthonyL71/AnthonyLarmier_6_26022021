@@ -2,7 +2,7 @@
   "name": "anthonylarmier_6_26022021",
   "version": "1.0.0",
   "description": "Projet 6 OpenClassRooms",
-  "main": "server.js",
+  "main": "index.js",
   "author": "Anthony Larmier",
   "license": "ISC",
   "dependencies": {

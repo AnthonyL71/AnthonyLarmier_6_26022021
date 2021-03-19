@@ -23,6 +23,7 @@ Ensuite éxécuter:
 
 ```bash
 npm install
+mkdir images/
 nodemon server
 ```
 Rendez-vous sur [http://localhost:3000](http://localhost:3000) !
