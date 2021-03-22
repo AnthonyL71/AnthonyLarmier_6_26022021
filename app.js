@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 // Setup MongoDb user, password, server, database exemple
- const server = 'mongodb+srv://<user>:<password>@<server>/<database>?retryWrites=true&w=majority';
+const server = 'mongodb+srv://<user>:<password>@<server>/<database>?retryWrites=true&w=majority';
 //
 
 
